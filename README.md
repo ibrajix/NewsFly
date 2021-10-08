@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  NewsFly is a modern news android application which features virtuall ALL modern android development tech stack and tools used in developing a perfomant, beautiful application.
+  NewsFly is a modern news android application which features virtually ALL recent and recommended android development tech stack and tools used in developing a perfomant, beautiful application.
 </p>
 
 <br/>
@@ -36,11 +36,15 @@
 
 ## DOWNLOAD
 
-
 ## MEDIUM
 
 I wrote a blog post about this, check it:
 
+## NOTE
+
+- While testing (the downloaded apk), remember that I used a free news API (https://newsapi.org/), If you encounter a 429 error (Too many request), it means that too many request has been sent within that time, you would have to wait before sending a request
+
+- While running on Android Studio, make sure you use your own API_KEY
 
 # License
 
