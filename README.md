@@ -28,7 +28,7 @@
 * Pagination
 * Retrofit
 * Glide
-* Offilne Capabilities -- Using both Remote Mediator (Pagination) and NetwokBound Resource 
+* Offline Capabilities -- Using both Remote Mediator (Pagination) and NetwokBound Resource 
 * Light and Dark Mode
 * Search
 
