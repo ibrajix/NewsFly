@@ -1,0 +1,24 @@
+<!--
+    Written and Developed by Inuwa Ibrahim - https://linktr.ee/Ibrajix
+-->
+<resources>
+    <string name="app_name">NewsFly</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="explore">Explore</string>
+    <string name="light_or_dark_icon">light or dark icon</string>
+    <string name="light_mode">light</string>
+    <string name="dark_mode">dark</string>
+    <string name="search_news">Search news</string>
+    <string name="crypto_news">Crypto News</string>
+    <string name="popular_news">Popular News</string>
+    <string name="see_all">See all</string>
+    <string name="popular_news_image">Popular news image</string>
+    <string name="recent_news">Recent News</string>
+    <string name="recent_news_image">Recent News Image</string>
+    <string name="search_icon">Search Icon</string>
+    <string name="text_too_many_request_error">For some weird reasons, your request cannot be made :(</string>
+    <string name="view_full_article">View Full article</string>
+    <string name="retry">Retry</string>
+    <string name="unknown_error_occurred">An Unknown Error Occured</string>
+</resources>

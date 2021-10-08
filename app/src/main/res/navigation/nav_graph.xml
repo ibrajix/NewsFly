@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Written and Developed by Inuwa Ibrahim - https://linktr.ee/Ibrajix
+-->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.ibrajix.newsfly.ui.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_newsDetailsFragment"
+            app:destination="@id/newsDetailsFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.ibrajix.newsfly.ui.fragments.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_newsDetailsFragment"
+            app:destination="@id/newsDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsDetailsFragment"
+        android:name="com.ibrajix.newsfly.ui.fragments.NewsDetailsFragment"
+        android:label="fragment_news_details"
+        tools:layout="@layout/fragment_news_details" >
+
+        <action
+            android:id="@+id/action_newsDetailsFragment_to_viewFullArticleFragment"
+            app:destination="@id/viewFullArticleFragment" />
+        <argument
+            android:name="recentArticle"
+            app:argType="com.ibrajix.newsfly.database.entity.RecentArticle" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewFullArticleFragment"
+        android:name="com.ibrajix.newsfly.ui.fragments.ViewFullArticleFragment"
+        android:label="fragment_view_full_article"
+        tools:layout="@layout/fragment_view_full_article" >
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
+</navigation>

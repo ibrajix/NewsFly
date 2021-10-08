@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+
+    <!-- The background color-->
+    <item android:drawable="@color/white"/>
+
+    <!-- Placeholder logo (Use the logo you uploaded)-->
+    <item>
+        <bitmap
+            android:src="@drawable/news_fly_logo"
+            android:gravity="center"/>
+    </item>
+
+</layer-list>

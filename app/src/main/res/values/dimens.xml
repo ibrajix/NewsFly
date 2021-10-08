@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Written and Developed by Inuwa Ibrahim - https://linktr.ee/Ibrajix
+-->
+<resources>
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="sp_20">20sp</dimen>
+    <dimen name="sp_18">19sp</dimen>
+</resources>
