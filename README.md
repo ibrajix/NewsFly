@@ -35,10 +35,12 @@
 ....And lots more 
 
 ## DOWNLOAD
+Navigate to <a href="https://github.com/ibrajix/NewsFly/releases">Releases</a> and download the latest apk
 
 ## MEDIUM
 
 I wrote a blog post about this, check it:
+<a href="https://ibrajix.medium.com/newsfly-%EF%B8%8F-a-modern-news-app-featuring-mvvm-navigation-component-flow-pagination-search-room-90e3970176b4">News Fly Blog Post</a>
 
 ## NOTE
 
