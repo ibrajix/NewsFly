@@ -10,10 +10,10 @@ import com.ibrajix.newsfly.utils.Urls
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-import retrofit2.http.Url
 
 interface ApiService {
 
+    //get all news from news api related to cryptoCurrency
     @GET("everything")
     suspend fun getRecentNews(
         @Query("q") q: String = "crypto",
@@ -22,6 +22,7 @@ interface ApiService {
         @Query("pageSize") pageSize: Int
     ) : AllNewsResponse
 
+    //get all popular cryptoCurrency related news
     @GET("everything")
     suspend fun getPopularNews(
             @Query("q") q: String = "crypto",
@@ -29,6 +30,7 @@ interface ApiService {
             @Query("pageSize") pageSize: Int = 5
     ) : PopularNewsResponse
 
+    //get all news when searching
     @GET("everything")
     suspend fun searchForNews(
             @Query("q") q: String,

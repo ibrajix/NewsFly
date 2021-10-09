@@ -13,7 +13,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import com.ibrajix.newsfly.R
@@ -113,6 +115,9 @@ class HomeFragment : Fragment() {
         })
 
         //initialize first recyclerview with an horizontal scroll view
+        binding.popularNewsRcv.adapter = popularNewsAdapter
+
+        //initialize second recyclerview with a linear layout
         binding.recentNewsRcv.apply {
             adapter = recentNewsAdapter
             adapter = recentNewsAdapter.withLoadStateHeaderAndFooter(
@@ -120,9 +125,6 @@ class HomeFragment : Fragment() {
                     footer = AllNewsLoadStateAdapter { recentNewsAdapter.retry() }
             )
         }
-
-        //initialize second recyclerview with a linear layout
-        binding.popularNewsRcv.adapter = popularNewsAdapter
 
     }
 
@@ -140,10 +142,12 @@ class HomeFragment : Fragment() {
             }
         }
 
-        //get recent news and observe
+        //this is the new recommended way of collecting flow in UI
         viewLifecycleOwner.lifecycleScope.launch {
-            newsViewModel.getRecentNews().collectLatest { pagingData->
-                recentNewsAdapter.submitData(pagingData)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                newsViewModel.getRecentNews().collectLatest { pagingData->
+                    recentNewsAdapter.submitData(pagingData)
+                }
             }
         }
 

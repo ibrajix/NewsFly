@@ -16,7 +16,6 @@ import com.ibrajix.newsfly.database.entity.RecentArticle
 import com.ibrajix.newsfly.di.ApplicationScope
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
-import javax.inject.Provider
 
 @Database(entities = [RecentArticle::class, PopularArticle::class, AllNewsRemoteKey::class],  version = 11)
 @TypeConverters(RoomConverter::class)
@@ -28,7 +27,6 @@ abstract class ArticlesDatabase : RoomDatabase() {
     class Callback @Inject constructor(@ApplicationScope private val applicationScope: CoroutineScope) : RoomDatabase.Callback(){
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-
         }
     }
 

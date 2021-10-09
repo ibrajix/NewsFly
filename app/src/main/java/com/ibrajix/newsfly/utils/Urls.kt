@@ -4,6 +4,8 @@
 
 package com.ibrajix.newsfly.utils
 
+import com.ibrajix.newsfly.BuildConfig
+
 class Urls {
 
     companion object {
@@ -12,8 +14,7 @@ class Urls {
         const val BASE_URL = "https://newsapi.org/v2/"
 
         //API KEY
-        const val API_KEY = "b333ea96fdc04652ada9c019b2f387e0"
-
+        const val API_KEY = BuildConfig.API_TOKEN //--< Make sure you input your api key.
     }
 
 }

@@ -4,14 +4,12 @@
 
 package com.ibrajix.newsfly.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.ibrajix.newsfly.R
 import com.ibrajix.newsfly.ui.viewmodel.StorageViewModel
-import com.ibrajix.newsfly.utils.isDarkThemeOn
-import com.ibrajix.newsfly.utils.whiteStatsBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.Theme_CryptoNews)
 
         super.onCreate(savedInstanceState)
-        
+
         checkSelectedTheme()
         setContentView(R.layout.activity_main)
 

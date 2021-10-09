@@ -24,12 +24,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class AllNewsViewModel @Inject constructor(private val allNewsRepository: AllNewsRepository) : ViewModel() {
 
-
-    //get all news using state flow api
-    private val _getNews = MutableStateFlow<PagingData<RecentArticle>>(PagingData.empty())
-    val getNews: StateFlow<PagingData<RecentArticle>> = _getNews
-
-    //get searched news using live data
+    //get searched news using live data (you can also use stateFlow)
     private val _searchAllNews = MutableLiveData<Resource<AllNewsResponse>>()
     val searchAllNews: LiveData<Resource<AllNewsResponse>> = _searchAllNews
 
@@ -39,9 +34,8 @@ class AllNewsViewModel @Inject constructor(private val allNewsRepository: AllNew
     private val eventChannel = Channel<Event>()
     val events = eventChannel.receiveAsFlow()
 
-    var pendingScrollToTopAfterRefresh = false
+    private var pendingScrollToTopAfterRefresh = false
 
-    private val refreshOnInit = false
 
     //get recent news
     fun getRecentNews(): Flow<PagingData<RecentArticle>> {
