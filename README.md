@@ -28,7 +28,7 @@
 * Pagination
 * Retrofit
 * Glide
-* Offline Capabilities -- Using both Remote Mediator (Pagination) and NetwokBound Resource 
+* Offline Capabilities -- Using both Remote Mediator (Pagination) and NetworkBound Resource 
 * Light and Dark Mode
 * Search
 
@@ -42,7 +42,7 @@ I wrote a blog post about this, check it:
 
 ## NOTE
 
-- While testing (the downloaded apk), remember that I used a free news API (https://newsapi.org/), If you encounter a 429 error (Too many request), it means that too many request has been sent within that time, you would have to wait before sending a request
+- While testing (the downloaded apk), keep in mind that I used a free news API (https://newsapi.org/). As such, if you encounter a 429 error (Too many request), it means that too many request has been sent within that time, you would have to wait before sending a request
 
 - While running on Android Studio, make sure you use your own API_KEY
 
