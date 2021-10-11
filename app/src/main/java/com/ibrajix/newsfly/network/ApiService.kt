@@ -13,19 +13,18 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    //get all news from news api related to cryptoCurrency
-    @GET("everything")
+    //get all recent news in the us
+    @GET("top-headlines?country=us")
     suspend fun getRecentNews(
-        @Query("q") q: String = "crypto",
         @Query("apiKey") apiKey: String = Urls.API_KEY,
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
     ) : AllNewsResponse
 
-    //get all popular cryptoCurrency related news
+    //get all popular news related to apple
     @GET("everything")
     suspend fun getPopularNews(
-            @Query("q") q: String = "crypto",
+            @Query("q") q: String = "apple",
             @Query("apiKey") apiKey: String = Urls.API_KEY,
             @Query("pageSize") pageSize: Int = 5
     ) : PopularNewsResponse
