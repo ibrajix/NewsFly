@@ -155,7 +155,7 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             newsViewModel.getPopularNews.collect {
 
-                popularNewsAdapter.submitList(it?.data?.sortedBy { it.publishedAt })
+                popularNewsAdapter.submitList(it?.data)
 
                  it ?: return@collect
 
