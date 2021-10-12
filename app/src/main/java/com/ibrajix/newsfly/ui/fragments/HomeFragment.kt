@@ -178,13 +178,21 @@ class HomeFragment : Fragment() {
 
                     Resource.Status.LOADING -> {
 
+                        //handle loading here, if you want to maybe display a progress bar or something
+                        //handle loading your way
+
                     }
 
                     Resource.Status.ERROR -> {
 
+                        //handle error here, by displaying a snackBar or something
+                        showError(it.message?:"Something went wrong")
                     }
 
                     Resource.Status.FAILURE -> {
+
+                        //handle failure here, by displaying a snackBar or something
+                        showError(it.message?:"Something went terribly wrong :(")
 
                     }
 
