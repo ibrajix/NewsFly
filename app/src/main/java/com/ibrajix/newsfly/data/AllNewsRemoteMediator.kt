@@ -12,22 +12,23 @@ import androidx.room.withTransaction
 import com.ibrajix.newsfly.database.entity.AllNewsRemoteKey
 import com.ibrajix.newsfly.database.entity.RecentArticle
 import com.ibrajix.newsfly.database.main.ArticlesDatabase
+import com.ibrajix.newsfly.utils.Constant
 import com.ibrajix.newsfly.utils.Constant.Companion.NEWS_STARTING_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
 @ExperimentalPagingApi
 class AllNewsRemoteMediator(
-    private val apiDataSource: ApiDataSource,
-    private val newsArticleDb: ArticlesDatabase,
+        private val apiDataSource: ApiDataSource,
+        private val newsArticleDb: ArticlesDatabase,
 ) : RemoteMediator<Int, RecentArticle>() {
 
     private val newsArticleDao = newsArticleDb.articleDao()
     private val remoteKeysDao = newsArticleDb.newsRemoteKeyDao()
 
     override suspend fun load(
-        loadType: LoadType,
-        state: PagingState<Int, RecentArticle>
+            loadType: LoadType,
+            state: PagingState<Int, RecentArticle>
     ): MediatorResult {
         return try {
 
@@ -47,10 +48,10 @@ class AllNewsRemoteMediator(
             val nextPageKey = loadKey + 1
             val prevPageKey = loadKey - 1
 
-           newsArticleDb.withTransaction {
-               remoteKeysDao.saveRemoteKeys(AllNewsRemoteKey(0, nextPageKey = nextPageKey, prevPageKey = prevPageKey))
-               newsArticleDao.saveRecentArticles(articles)
-           }
+            newsArticleDb.withTransaction {
+                remoteKeysDao.saveRemoteKeys(AllNewsRemoteKey(0, nextPageKey = nextPageKey, prevPageKey = prevPageKey))
+                newsArticleDao.saveRecentArticles(articles)
+            }
 
             MediatorResult.Success(endOfPaginationReached = listing.isEmpty())
 

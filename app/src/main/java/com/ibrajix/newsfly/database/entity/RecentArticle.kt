@@ -15,9 +15,8 @@ import java.io.Serializable
 
 @Entity(tableName = "recent_articles")
 data class RecentArticle(
-        @PrimaryKey(autoGenerate = true)
-        val id: Int?,
-        val url: String?,
+        @PrimaryKey
+        val url: String,
         val author: String?,
         val content: String?,
         val description: String?,

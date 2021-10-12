@@ -30,7 +30,6 @@ interface ArticleDao {
     @Query("DELETE FROM recent_articles")
     suspend fun deleteRecentArticles()
 
-
     /**
      * Popular article DAO
      */

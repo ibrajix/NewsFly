@@ -17,7 +17,7 @@ import com.ibrajix.newsfly.di.ApplicationScope
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
-@Database(entities = [RecentArticle::class, PopularArticle::class, AllNewsRemoteKey::class],  version = 11)
+@Database(entities = [RecentArticle::class, PopularArticle::class, AllNewsRemoteKey::class],  version = 13)
 @TypeConverters(RoomConverter::class)
 abstract class ArticlesDatabase : RoomDatabase() {
 

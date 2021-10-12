@@ -4,6 +4,7 @@
 
 package com.ibrajix.newsfly.network
 
+import com.ibrajix.newsfly.database.entity.AllNewsRemoteKey
 import com.ibrajix.newsfly.model.responses.AllNewsResponse
 import com.ibrajix.newsfly.model.responses.PopularNewsResponse
 import com.ibrajix.newsfly.utils.Urls
@@ -16,9 +17,9 @@ interface ApiService {
     //get all recent news in the us
     @GET("top-headlines?country=us")
     suspend fun getRecentNews(
-        @Query("apiKey") apiKey: String = Urls.API_KEY,
-        @Query("page") page: Int,
-        @Query("pageSize") pageSize: Int
+            @Query("apiKey") apiKey: String = Urls.API_KEY,
+            @Query("page") page: Int?,
+            @Query("pageSize") pageSize: Int
     ) : AllNewsResponse
 
     //get all popular news related to apple
