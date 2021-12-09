@@ -17,5 +17,4 @@ class RecentNewsDiffCallback : DiffUtil.ItemCallback<RecentArticle>() {
         return oldItem == newItem
     }
 
-
 }

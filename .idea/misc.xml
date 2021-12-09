@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.11271529888551166" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/rcv_popular_news.xml" value="0.24739583333333334" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

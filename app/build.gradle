@@ -29,7 +29,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -127,5 +127,8 @@ dependencies {
 
     //shimmer layout
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    //rate
+    implementation 'com.github.hotchemi:android-rate:1.0.1'
 
 }

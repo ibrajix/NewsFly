@@ -21,10 +21,7 @@ inline fun <ResultType, RequestType> networkBoundResource(
     crossinline onFetchSuccess: () -> Unit = { },
     crossinline onFetchFailed: (Throwable) -> Unit = { }
 ) = channelFlow{
-
-
     val data = query().first()
-
     if (shouldFetch(data)) {
         val loading = launch {
             query().collect { send(Resource.loading(it)) }
