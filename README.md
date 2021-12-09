@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  NewsFly is a modern news android application which features virtually ALL recent and recommended android development tech stack and tools used in developing a perfomant, beautiful application.
+  NewsFly is a modern news android application which features virtually ALL recent and recommended android development tech stack and tools used in developing a performant, beautiful application.
 </p>
 
 <br/>
