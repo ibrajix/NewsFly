@@ -34,8 +34,7 @@
 
 ....And lots more 
 
-## DOWNLOAD
-Navigate to <a href="https://github.com/ibrajix/NewsFly/releases">Releases</a> and download the latest apk
+
 
 Note: I used a free api for this application which has request/rate limit, so dont be shocked if you encounter a 429 error
 
