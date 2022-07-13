@@ -17,7 +17,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import com.ibrajix.newsfly.databinding.FragmentSearchBinding
-import com.ibrajix.newsfly.network.Resource
 import com.ibrajix.newsfly.ui.adapters.all.SearchNewsAdapter
 import com.ibrajix.newsfly.ui.viewmodel.AllNewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,7 +64,7 @@ class SearchFragment : Fragment() {
 
             editable?.let {
                 if (editable.toString().isNotEmpty()){
-                    allNewsViewModel.doSearchForNews(editable.toString())
+                   /* allNewsViewModel.doSearchForNews(editable.toString())*/
                 }
             }
         }
@@ -82,7 +81,7 @@ class SearchFragment : Fragment() {
 
    private fun observeData(){
 
-        allNewsViewModel.searchAllNews.observe(viewLifecycleOwner){
+       /* allNewsViewModel.searchAllNews.observe(viewLifecycleOwner){
 
             when (it.status) {
 
@@ -115,7 +114,7 @@ class SearchFragment : Fragment() {
 
             }
 
-        }
+        }*/
 
     }
 

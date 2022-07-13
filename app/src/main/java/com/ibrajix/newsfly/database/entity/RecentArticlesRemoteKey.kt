@@ -12,9 +12,9 @@ import androidx.room.PrimaryKey
  */
 
 @Entity(tableName = "all_news_remote_keys")
-data class AllNewsRemoteKey(
-        @PrimaryKey(autoGenerate = true)
-        val id: Int,
-        val nextPageKey: Int,
-        val prevPageKey: Int,
+data class RecentArticlesRemoteKey(
+        @PrimaryKey
+        val url: String,
+        val nextPageKey: Int?,
+        val prevPageKey: Int?,
 )

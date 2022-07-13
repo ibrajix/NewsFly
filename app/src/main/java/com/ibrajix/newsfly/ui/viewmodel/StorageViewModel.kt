@@ -4,13 +4,14 @@
 
 package com.ibrajix.newsfly.ui.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.ibrajix.newsfly.storage.DataStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class StorageViewModel @Inject constructor(private val dataStorage: DataStorage) : ViewModel()  {
@@ -23,6 +24,21 @@ class StorageViewModel @Inject constructor(private val dataStorage: DataStorage)
         viewModelScope.launch {
             dataStorage.setSelectedTheme(theme)
         }
+    }
+
+
+    val isUsersFirstTime = dataStorage.isUserFirstTime().asLiveData()
+    fun changeUsersFirstTime(isFirstTime: Boolean){
+        viewModelScope.launch {
+            dataStorage.setUserFirstTime(isFirstTime)
+        }
+    }
+
+    private val _hasClickedRetryButton = MutableLiveData<Boolean>()
+    val hasClickedRetryButton: LiveData<Boolean> = _hasClickedRetryButton
+
+    fun userClickedRetryButton(isClicked: Boolean) {
+        _hasClickedRetryButton.value = isClicked
     }
 
 }

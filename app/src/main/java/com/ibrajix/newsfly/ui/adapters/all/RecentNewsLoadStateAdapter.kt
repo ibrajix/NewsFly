@@ -14,21 +14,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ibrajix.newsfly.R
 import com.ibrajix.newsfly.databinding.LoadStateFooterBinding
 
-class AllNewsLoadStateAdapter(private val retry: () -> Unit) :
-    LoadStateAdapter<AllNewsLoadStateAdapter.LoadStateViewHolder>() {
+class RecentNewsLoadStateAdapter(private val retry: () -> Unit) :
+    LoadStateAdapter<RecentNewsLoadStateAdapter.LoadStateViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
         val binding =
             LoadStateFooterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return LoadStateViewHolder(binding)
+        return LoadStateViewHolder(binding, retry)
     }
 
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
         holder.bind(loadState)
     }
 
-    inner class LoadStateViewHolder(private val binding: LoadStateFooterBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class LoadStateViewHolder(
+        private val binding: LoadStateFooterBinding,
+        retry: () -> Unit
+        ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.buttonRetry.setOnClickListener {
@@ -48,5 +50,7 @@ class AllNewsLoadStateAdapter(private val retry: () -> Unit) :
                 }
             }
         }
+
     }
+
 }

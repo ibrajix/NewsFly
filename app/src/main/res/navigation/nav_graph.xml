@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_newsDetailsFragment"
             app:destination="@id/newsDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_bottomDialogNotConnectedFragment"
+            app:destination="@id/bottomDialogNotConnectedFragment" />
 
     </fragment>
     <fragment
@@ -52,4 +55,8 @@
             android:name="url"
             app:argType="string" />
     </fragment>
+    <dialog
+        android:id="@+id/bottomDialogNotConnectedFragment"
+        android:name="com.ibrajix.newsfly.ui.fragments.BottomDialogNotConnectedFragment"
+        android:label="BottomDialogNotConnectedFragment" />
 </navigation>

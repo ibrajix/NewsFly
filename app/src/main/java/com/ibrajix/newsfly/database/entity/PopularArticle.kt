@@ -24,5 +24,6 @@ data class PopularArticle(
         val publishedAt: String?,
         val source: Source?,
         val title: String?,
+        val updatedAt: Long = System.currentTimeMillis(),
         val urlToImage: String?
 ) : Serializable

@@ -4,7 +4,12 @@
 
 package com.ibrajix.newsfly.utils
 
+import android.app.Activity
 import android.content.Context
+import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
@@ -51,5 +56,42 @@ object Utility {
         return this
     }
 
+    /**
+    * This function helps to make the status bar transparent
+    */
+    fun isConnectedToInternet(context: Context): Boolean{
+        var isConnected = false
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            cm?.run {
+                cm.getNetworkCapabilities(cm.activeNetwork)?.run {
+                    if (hasTransport(NetworkCapabilities.TRANSPORT_WIFI)){
+                        isConnected = true
+                    } else if (hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){
+                        isConnected = true
+                    } else if (hasTransport(NetworkCapabilities.TRANSPORT_VPN)){
+                        isConnected = true
+                    }
+                }
+            }
+        }else{
+            cm?.run {
+                cm.activeNetworkInfo?.run {
+                    when(type){
+                        ConnectivityManager.TYPE_WIFI -> {
+                            isConnected = true
+                        }
+                        ConnectivityManager.TYPE_MOBILE -> {
+                            isConnected = true
+                        }
+                        ConnectivityManager.TYPE_VPN -> {
+                            isConnected = true
+                        }
+                    }
+                }
+            }
+        }
+     return isConnected
+    }
 
 }

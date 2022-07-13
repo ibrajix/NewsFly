@@ -28,9 +28,12 @@ object DatabaseModule {
         .build()
 
     @Provides
-    fun providesArticleDao(articlesDatabase: ArticlesDatabase) =
-        articlesDatabase.articleDao()
+    fun providePopularArticleDao(articlesDatabase: ArticlesDatabase) =
+        articlesDatabase.popularArticleDao()
 
+    @Provides
+    fun provideRecentArticleDao(articlesDatabase: ArticlesDatabase) =
+        articlesDatabase.recentArticleDao()
 
     @ApplicationScope
     @Provides

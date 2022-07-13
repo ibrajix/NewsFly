@@ -8,21 +8,23 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.ibrajix.newsfly.database.dao.AllNewsRemoteKeyDao
-import com.ibrajix.newsfly.database.dao.ArticleDao
-import com.ibrajix.newsfly.database.entity.AllNewsRemoteKey
+import com.ibrajix.newsfly.database.dao.RecentArticlesRemoteKeyDao
+import com.ibrajix.newsfly.database.dao.PopularArticleDao
+import com.ibrajix.newsfly.database.dao.RecentArticleDao
+import com.ibrajix.newsfly.database.entity.RecentArticlesRemoteKey
 import com.ibrajix.newsfly.database.entity.PopularArticle
 import com.ibrajix.newsfly.database.entity.RecentArticle
 import com.ibrajix.newsfly.di.ApplicationScope
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
-@Database(entities = [RecentArticle::class, PopularArticle::class, AllNewsRemoteKey::class],  version = 13)
+@Database(entities = [RecentArticle::class, PopularArticle::class, RecentArticlesRemoteKey::class],  version = 16)
 @TypeConverters(RoomConverter::class)
 abstract class ArticlesDatabase : RoomDatabase() {
 
-    abstract fun articleDao(): ArticleDao
-    abstract fun newsRemoteKeyDao(): AllNewsRemoteKeyDao
+    abstract fun recentArticleDao(): RecentArticleDao
+    abstract fun popularArticleDao(): PopularArticleDao
+    abstract fun newsRemoteKeyDao(): RecentArticlesRemoteKeyDao
 
     class Callback @Inject constructor(@ApplicationScope private val applicationScope: CoroutineScope) : RoomDatabase.Callback(){
         override fun onCreate(db: SupportSQLiteDatabase) {

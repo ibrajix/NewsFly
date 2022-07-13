@@ -11,15 +11,11 @@ import com.ibrajix.newsfly.database.entity.RecentArticle
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Contains data access object (DAO) used for querying articles from database
+ * Contains data access object (DAO) used for querying recent articles from database
  */
 
 @Dao
-interface ArticleDao {
-
-    /**
-     * Recent article DAO
-     */
+interface RecentArticleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveRecentArticles(recentArticles: List<RecentArticle>)
@@ -29,18 +25,5 @@ interface ArticleDao {
 
     @Query("DELETE FROM recent_articles")
     suspend fun deleteRecentArticles()
-
-    /**
-     * Popular article DAO
-     */
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun savePopularArticles(popularArticle: List<PopularArticle>)
-
-    @Query("SELECT * FROM popular_articles")
-    fun getAllPopularArticles(): Flow<List<PopularArticle>>
-
-    @Query("DELETE FROM popular_articles")
-    suspend fun deletePopularArticles()
 
 }

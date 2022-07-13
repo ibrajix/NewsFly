@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.ibrajix.newsfly.R
 import com.ibrajix.newsfly.ui.viewmodel.StorageViewModel
+import com.ibrajix.newsfly.utils.isDarkThemeOn
+import com.ibrajix.newsfly.utils.transparentStatusBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,6 +24,10 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.Theme_CryptoNews)
 
         super.onCreate(savedInstanceState)
+
+        if(!isDarkThemeOn()){
+            transparentStatusBar()
+        }
 
         checkSelectedTheme()
         setContentView(R.layout.activity_main)

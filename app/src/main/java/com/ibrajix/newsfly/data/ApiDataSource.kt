@@ -4,7 +4,6 @@
 
 package com.ibrajix.newsfly.data
 
-import com.ibrajix.newsfly.database.entity.AllNewsRemoteKey
 import com.ibrajix.newsfly.network.ApiService
 import javax.inject.Inject
 

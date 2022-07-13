@@ -3,10 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_dark_mode.xml" value="0.1325" />
+        <entry key="app/src/main/res/drawable/ic_light_mode.xml" value="0.1325" />
+        <entry key="app/src/main/res/drawable/ic_no_internet.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.11271529888551166" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/layout/fragment_bottom_dialog_not_connected.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_news_details.xml" value="0.11" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/load_state_footer.xml" value="0.15698394775390626" />
         <entry key="app/src/main/res/layout/rcv_popular_news.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/rcv_recent_news.xml" value="0.1" />
       </map>
     </option>
   </component>

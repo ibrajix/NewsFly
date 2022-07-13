@@ -20,5 +20,12 @@
     <string name="text_too_many_request_error">For some weird reasons, your request cannot be made :(</string>
     <string name="view_full_article">View Full article</string>
     <string name="retry">Retry</string>
-    <string name="unknown_error_occurred">An Unknown Error Occured</string>
+    <string name="unknown_error_occurred">An Unknown Error occured</string>
+    <string name="not_connected_internet">You need to be online for first time visit</string>
+    <string name="not_connected_internet_error">You are not connected, your news will be refreshed when you are online</string>
+    <string name="try_again">Try Again</string>
+    <string name="not_connected">Not Connected</string>
+    <string name="need_to_be_online">You need to be online for first time visit</string>
+    <string name="cancel_dialog">Cancel</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

@@ -6,7 +6,7 @@ package com.ibrajix.newsfly.database.dao
 
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import com.ibrajix.newsfly.database.entity.AllNewsRemoteKey
+import com.ibrajix.newsfly.database.entity.RecentArticlesRemoteKey
 
 
 /**
@@ -14,13 +14,13 @@ import com.ibrajix.newsfly.database.entity.AllNewsRemoteKey
  */
 
 @Dao
-interface AllNewsRemoteKeyDao{
+interface RecentArticlesRemoteKeyDao{
 
     @Insert(onConflict = REPLACE)
-    suspend fun saveRemoteKeys(remoteKey: AllNewsRemoteKey)
+    suspend fun saveRemoteKeys(remoteKey: List<RecentArticlesRemoteKey>)
 
-    @Query("SELECT * FROM all_news_remote_keys ORDER BY id DESC")
-    suspend fun getRemoteKeys(): AllNewsRemoteKey
+    @Query("SELECT * FROM all_news_remote_keys WHERE url = :url")
+    suspend fun getRemoteKeys(url: String): RecentArticlesRemoteKey?
 
     @Query("DELETE FROM all_news_remote_keys")
     suspend fun clearRemoteKeys()

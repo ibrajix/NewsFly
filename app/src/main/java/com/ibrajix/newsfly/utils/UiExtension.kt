@@ -15,15 +15,11 @@ import android.view.View
  * Contains UI-Related extension functions
  */
 
-//this function changes the status bar color to white on light theme
-fun Activity.whiteStatsBar() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-        window.statusBarColor = Color.WHITE
-    } else {
-        window.setDecorFitsSystemWindows(false)
-        window.statusBarColor = Color.WHITE
-    }
+//transparent status bar
+fun Activity.transparentStatusBar() {
+    val decor = window.decorView
+    decor.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+    window.statusBarColor = Color.TRANSPARENT
 }
 
 //this checks if dark theme is enabled

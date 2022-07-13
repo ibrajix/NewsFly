@@ -4,34 +4,30 @@
 
 package com.ibrajix.newsfly.ui.fragments
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
+import com.google.android.material.snackbar.Snackbar
 import com.ibrajix.newsfly.R
 import com.ibrajix.newsfly.databinding.FragmentHomeBinding
-import com.ibrajix.newsfly.network.Resource
-import com.ibrajix.newsfly.ui.adapters.all.AllNewsLoadStateAdapter
+import com.ibrajix.newsfly.network.ApiStatus
 import com.ibrajix.newsfly.ui.adapters.all.PopularNewsAdapter
-import com.ibrajix.newsfly.ui.adapters.all.RecentNewsAdapter
 import com.ibrajix.newsfly.ui.viewmodel.AllNewsViewModel
 import com.ibrajix.newsfly.ui.viewmodel.StorageViewModel
 import com.ibrajix.newsfly.utils.Utility
-import com.ibrajix.newsfly.utils.exhaustive
+import com.ibrajix.newsfly.utils.Utility.isConnectedToInternet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -45,8 +41,9 @@ class HomeFragment : Fragment() {
     private val storageViewModel: StorageViewModel by viewModels()
     private val newsViewModel: AllNewsViewModel by viewModels()
     private var currentTheme: String = "light"
+    private var isUsersFirstTimeVisit: Boolean = false
     lateinit var popularNewsAdapter: PopularNewsAdapter
-    lateinit var recentNewsAdapter: RecentNewsAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,168 +66,132 @@ class HomeFragment : Fragment() {
 
     private fun initView(){
 
+        checkIfUsersFirstTimeWithoutInternet()
 
-        //start shimmer
-        binding.shimmerLayout.startShimmer()
-
-        //set up adapter
         setUpAdapter()
 
-        //observe all observables
-        observeDataSet()
-
-        //handle clicks by user
         handleClicks()
 
-        //handle swipe to refresh
         handleSwipeToRefresh()
 
-    }
-
-
-    private fun handleSwipeToRefresh(){
-
-        //on swipe
-        binding.mainContainer.setOnRefreshListener {
-            observeDataSet()
-            binding.mainContainer.isRefreshing = false
-        }
+        checkUiMode()
 
     }
 
 
 
-    private fun setUpAdapter(){
-
-        popularNewsAdapter = PopularNewsAdapter(onClickListener = PopularNewsAdapter.OnNewsItemClickListener { article ->
-            //open article url in browser
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(article.url))
-            startActivity(intent)
-        })
-
-        recentNewsAdapter = RecentNewsAdapter(onClickListener = RecentNewsAdapter.OnNewsItemClickListener { article ->
-            //go to news newsDetailsFragment when recyclerview item clicked
-            val action = HomeFragmentDirections.actionHomeFragmentToNewsDetailsFragment(article)
-            findNavController().navigate(action)
-        })
-
-        //initialize first recyclerview with an horizontal scroll view
-        binding.popularNewsRcv.adapter = popularNewsAdapter
-
-        //initialize second recyclerview with a linear layout
-        binding.recentNewsRcv.apply {
-            adapter = recentNewsAdapter
-            adapter = recentNewsAdapter.withLoadStateHeaderAndFooter(
-                    header = AllNewsLoadStateAdapter { recentNewsAdapter.retry() },
-                    footer = AllNewsLoadStateAdapter { recentNewsAdapter.retry() }
-            )
-        }
-
-    }
-
-
-    private fun observeDataSet(){
-
-        //observe selected theme
+    private fun checkUiMode(){
         storageViewModel.selectedTheme.observe(viewLifecycleOwner){
             currentTheme = it
             when(currentTheme){
-                requireContext().getString(R.string.light_mode) -> binding.icThemeMode.setImageResource(
-                        R.drawable.ic_dark_mode
-                )
+                requireContext().getString(R.string.light_mode) -> {
+                    binding.icThemeMode.setBackgroundResource(R.drawable.ic_dark_mode)
+                }
                 else -> binding.icThemeMode.setImageResource(R.drawable.ic_light_mode)
             }
         }
+    }
 
-        //this is the new recommended way of collecting flow in UI
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                newsViewModel.getRecentNews().collectLatest { pagingData->
-                    recentNewsAdapter.submitData(pagingData)
-                }
+    private fun checkIfUsersFirstTimeWithoutInternet(){
+
+        storageViewModel.isUsersFirstTime.observe(viewLifecycleOwner){usersFirstTime->
+
+            isUsersFirstTimeVisit = usersFirstTime
+
+            if (usersFirstTime == true && !isConnectedToInternet(requireContext())){
+                //open alert dialog
+                binding.lytNotConnected.visibility = View.VISIBLE
+                binding.lytMain.visibility = View.GONE
             }
-        }
-
-        //get popular news and observe
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            newsViewModel.getPopularNews.collect {
-
-                popularNewsAdapter.submitList(it?.data)
-
-                 it ?: return@collect
-
-                when (it.status) {
-
-                    Resource.Status.SUCCESS -> {
-
-                        //hide shimmer
-                        binding.shimmerLayout.visibility = View.INVISIBLE
-
-                        //show recyclerview
-                        binding.popularNewsRcv.visibility = View.VISIBLE
-
-                        //show recent news title
-                        binding.recentNews.visibility = View.VISIBLE
-
-                        //hide error view, if by any means it was shown
-                        binding.lytError.visibility = View.INVISIBLE
-                    }
-
-                    Resource.Status.LOADING -> {
-
-                        //handle loading here, if you want to maybe display a progress bar or something
-                        //handle loading your way
-
-                    }
-
-                    Resource.Status.ERROR -> {
-
-                        //handle error here, by displaying a snackBar or something
-                        showError(it.message?:"Something went wrong")
-                    }
-
-                    Resource.Status.FAILURE -> {
-
-                        //handle failure here, by displaying a snackBar or something
-                        showError(it.message?:"Something went terribly wrong :(")
-
-                    }
-
-                }
-            }
-        }
-
-        //using events, show appropriate error in snackBar (if any)
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            newsViewModel.events.collect { event ->
-                when (event) {
-                    is AllNewsViewModel.Event.ShowErrorMessage ->
-                        showError(event.error.localizedMessage ?: "")
-                                .exhaustive
-                }
-
+            else{
+                getData()
+                binding.lytNotConnected.visibility = View.GONE
+                binding.lytMain.visibility = View.VISIBLE
             }
         }
 
     }
 
-    private fun showError(error: String){
 
-        //stop shimmer effect and don't show it
-        binding.shimmerLayout.stopShimmer()
-        binding.shimmerLayout.visibility = View.INVISIBLE
+    private fun getData(){
 
-        //show a snackBar
-        Utility.displayErrorSnackBar(binding.root, error, requireContext())
+        lifecycleScope.launch {
+
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                newsViewModel.getPopularAndRecentNews.collect{ result->
+
+                    val news = result ?: return@collect
+
+                    popularNewsAdapter.submitList(news.data)
+
+                    when(result){
+
+                        is ApiStatus.Success -> {
+                            storageViewModel.changeUsersFirstTime(false)
+                            binding.shimmerLayout.visibility = View.GONE
+                        }
+                        is ApiStatus.Error -> {
+                            binding.shimmerLayout.visibility = View.GONE
+                        }
+                        is ApiStatus.Loading -> {
+                            if (isUsersFirstTimeVisit && isConnectedToInternet(requireContext())){
+                                binding.shimmerLayout.visibility = View.VISIBLE
+                            }
+                            binding.root.isRefreshing = true
+                        }
+                        null -> {
+                            if (isUsersFirstTimeVisit && isConnectedToInternet(requireContext())){
+                                binding.shimmerLayout.visibility = View.VISIBLE
+                            }
+                        }
+                    }
+
+                    //handle refresh
+                    binding.root.isRefreshing = result is ApiStatus.Loading
+
+                }
+
+            }
+
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                newsViewModel.snackErrorMessage.collect{ error->
+                    //error here is the message returned from api (I don't wanna show that)
+                    Utility.displayErrorSnackBar(binding.root, getString(R.string.not_connected_internet_error), requireContext())
+                }
+            }
+        }
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        newsViewModel.getLatestPopularNews()
+    }
+
+    private fun setUpAdapter(){
+
+        //popular news
+        popularNewsAdapter = PopularNewsAdapter(PopularNewsAdapter.OnNewsItemClickListener{
+            //do something
+        })
+
+        binding.popularNewsRcv.apply {
+            adapter = popularNewsAdapter
+        }
+
+
+    }
 
     private fun handleClicks(){
 
-        //on click change theme
-        binding.icThemeMode.setOnClickListener {
+        binding.btnRetryInternet.setOnClickListener {
+            checkIfUsersFirstTimeWithoutInternet()
+        }
 
+        binding.icThemeMode.setOnClickListener{
             if (currentTheme == requireContext().getString(R.string.light_mode)){
                 //change to dark theme asap
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -245,42 +206,12 @@ class HomeFragment : Fragment() {
             }
         }
 
-        //on click search edit text - go to searchFragment
-        binding.editText.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
-            findNavController().navigate(action)
-        }
+    }
 
-        //on click refresh
+    private fun handleSwipeToRefresh(){
         binding.root.setOnRefreshListener {
-           newsViewModel.onManualRefresh()
+           newsViewModel.onRefreshSwiped()
         }
-
-        binding.btnRetry.setOnClickListener {
-            newsViewModel.onManualRefresh()
-        }
-
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-     override fun onResume() {
-         binding.shimmerLayout.startShimmer()
-         super.onResume()
-    }
-
-     override fun onPause() {
-         binding.shimmerLayout.stopShimmer()
-         super.onPause()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        newsViewModel.onStart()
     }
 
 }

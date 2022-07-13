@@ -73,10 +73,8 @@ class NewsDetailsFragment : Fragment() {
 
         //on click view full article, open webView
         binding.btnViewFullArticle.setOnClickListener {
-            val action = args.recentArticle.url?.let { it1 -> NewsDetailsFragmentDirections.actionNewsDetailsFragmentToViewFullArticleFragment(url = it1) }
-            if (action != null) {
-                findNavController().navigate(action)
-            }
+            val action = args.recentArticle.url.let { it1 -> NewsDetailsFragmentDirections.actionNewsDetailsFragmentToViewFullArticleFragment(url = it1) }
+            findNavController().navigate(action)
         }
 
 
