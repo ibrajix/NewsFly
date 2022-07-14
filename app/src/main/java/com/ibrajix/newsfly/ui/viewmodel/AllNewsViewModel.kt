@@ -5,9 +5,7 @@
 package com.ibrajix.newsfly.ui.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -15,6 +13,8 @@ import com.bumptech.glide.load.engine.Resource
 import com.ibrajix.newsfly.data.AllNewsRepository
 import com.ibrajix.newsfly.database.entity.PopularArticle
 import com.ibrajix.newsfly.database.entity.RecentArticle
+import com.ibrajix.newsfly.model.responses.AllNewsResponse
+import com.ibrajix.newsfly.network.ApiService
 import com.ibrajix.newsfly.network.ApiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,6 +23,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import retrofit2.Response.error
 
 @HiltViewModel
 @ExperimentalPagingApi
@@ -78,6 +79,26 @@ class AllNewsViewModel @Inject constructor(private val allNewsRepository: AllNew
 
     fun getRecentNews() : Flow<PagingData<RecentArticle>> {
        return allNewsRepository.getRecentNews().cachedIn(viewModelScope)
+    }
+
+
+    //get searched news using live data (you can also use stateFlow)
+    private val _searchAllNews = MutableLiveData<ApiStatus<AllNewsResponse>>()
+    val searchAllNews: LiveData<ApiStatus<AllNewsResponse>> = _searchAllNews
+
+    fun doSearchForNews(q: String) {
+
+        _searchAllNews.value = ApiStatus.Loading(data = null)
+
+        viewModelScope.launch {
+            allNewsRepository.searchForNewsItem(q)
+                .catch { e ->
+                    _searchAllNews.value = ApiStatus.Error(data = null, throwable = e)
+                }
+                .collect {
+                    _searchAllNews.value = it
+                }
+        }
     }
 
 

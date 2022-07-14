@@ -16,9 +16,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
+import com.ibrajix.newsfly.R
 import com.ibrajix.newsfly.databinding.FragmentSearchBinding
+import com.ibrajix.newsfly.network.ApiStatus
 import com.ibrajix.newsfly.ui.adapters.all.SearchNewsAdapter
 import com.ibrajix.newsfly.ui.viewmodel.AllNewsViewModel
+import com.ibrajix.newsfly.utils.Utility
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
@@ -64,7 +67,7 @@ class SearchFragment : Fragment() {
 
             editable?.let {
                 if (editable.toString().isNotEmpty()){
-                   /* allNewsViewModel.doSearchForNews(editable.toString())*/
+                    allNewsViewModel.doSearchForNews(editable.toString())
                 }
             }
         }
@@ -81,40 +84,27 @@ class SearchFragment : Fragment() {
 
    private fun observeData(){
 
-       /* allNewsViewModel.searchAllNews.observe(viewLifecycleOwner){
+       allNewsViewModel.searchAllNews.observe(viewLifecycleOwner){ result->
 
-            when (it.status) {
+           when(result){
+              is ApiStatus.Success -> {
+                  if (result.data?.status == "ok") {
+                      searchNewsAdapter.submitList(result.data.recentArticles)
+                  } else {
+                      Utility.displayErrorSnackBar(binding.root, requireContext().getString(R.string.unknown_error_occurred), requireContext())
+                  }
+                  binding.loading.visibility = View.GONE
+              }
+               is ApiStatus.Error -> {
+                   //log error
+               }
+               is ApiStatus.Loading -> {
+                   //show progress bar
+                   binding.loading.visibility = View.VISIBLE
+               }
+           }
 
-                Resource.Status.SUCCESS -> {
-
-                    if (it.data?.status == "ok") {
-                        searchNewsAdapter.submitList(it.data.recentArticles)
-                    } else {
-
-                        Toast.makeText(
-                            requireContext(),
-                            "Ooops, something went wrong",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-
-                }
-
-                Resource.Status.ERROR -> {
-
-                }
-
-                Resource.Status.LOADING -> {
-
-                }
-
-                Resource.Status.FAILURE -> {
-
-                }
-
-            }
-
-        }*/
+        }
 
     }
 

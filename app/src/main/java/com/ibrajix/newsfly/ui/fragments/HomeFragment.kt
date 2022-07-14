@@ -210,8 +210,6 @@ class HomeFragment : Fragment() {
             adapter = recentNewsAdapter
         }
 
-
-
     }
 
     private fun handleClicks(){
@@ -233,6 +231,12 @@ class HomeFragment : Fragment() {
                 //change the preference to light mode
                 storageViewModel.changeSelectedTheme(requireContext().getString(R.string.light_mode))
             }
+        }
+
+        //on click search edit text - go to searchFragment
+        binding.editText.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToSearchFragment()
+            findNavController().navigate(action)
         }
 
     }
