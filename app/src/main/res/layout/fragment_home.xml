@@ -217,7 +217,6 @@
                     android:textColor="@color/app_main_color"
                     android:textSize="@dimen/sp_18"
                     android:textStyle="bold"
-                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@+id/popular_news_rcv"
                     app:layout_constraintTop_toBottomOf="@+id/popular_news_rcv" />
 

@@ -4,12 +4,17 @@
 
 package com.ibrajix.newsfly.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.bumptech.glide.load.engine.Resource
 import com.ibrajix.newsfly.data.AllNewsRepository
 import com.ibrajix.newsfly.database.entity.PopularArticle
+import com.ibrajix.newsfly.database.entity.RecentArticle
 import com.ibrajix.newsfly.network.ApiStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,6 +28,11 @@ import kotlinx.coroutines.launch
 @ExperimentalPagingApi
 @ExperimentalCoroutinesApi
 class AllNewsViewModel @Inject constructor(private val allNewsRepository: AllNewsRepository) : ViewModel() {
+
+
+    /**
+     * Popular and Recent ews
+     */
 
     private val _snackErrorMessage = MutableSharedFlow<String>()
     val snackErrorMessage = _snackErrorMessage.asSharedFlow()
@@ -63,6 +73,11 @@ class AllNewsViewModel @Inject constructor(private val allNewsRepository: AllNew
                 refreshTriggerChannel.send(RefreshLoad.FORCE)
             }
         }
+    }
+
+
+    fun getRecentNews() : Flow<PagingData<RecentArticle>> {
+       return allNewsRepository.getRecentNews().cachedIn(viewModelScope)
     }
 
 

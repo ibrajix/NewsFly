@@ -14,7 +14,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     //get all recent news in the us
-    @GET("top-headlines?country=us")
+    @GET("everything?q=phone")
     suspend fun getRecentNews(
             @Query("apiKey") apiKey: String = Urls.API_KEY,
             @Query("page") page: Int?,

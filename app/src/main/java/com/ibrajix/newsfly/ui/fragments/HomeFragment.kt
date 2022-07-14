@@ -4,6 +4,8 @@
 
 package com.ibrajix.newsfly.ui.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,18 +18,21 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import com.google.android.material.snackbar.Snackbar
 import com.ibrajix.newsfly.R
 import com.ibrajix.newsfly.databinding.FragmentHomeBinding
 import com.ibrajix.newsfly.network.ApiStatus
 import com.ibrajix.newsfly.ui.adapters.all.PopularNewsAdapter
+import com.ibrajix.newsfly.ui.adapters.all.RecentNewsAdapter
 import com.ibrajix.newsfly.ui.viewmodel.AllNewsViewModel
 import com.ibrajix.newsfly.ui.viewmodel.StorageViewModel
 import com.ibrajix.newsfly.utils.Utility
 import com.ibrajix.newsfly.utils.Utility.isConnectedToInternet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -43,6 +48,7 @@ class HomeFragment : Fragment() {
     private var currentTheme: String = "light"
     private var isUsersFirstTimeVisit: Boolean = false
     lateinit var popularNewsAdapter: PopularNewsAdapter
+    lateinit var recentNewsAdapter: RecentNewsAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -164,6 +170,15 @@ class HomeFragment : Fragment() {
             }
         }
 
+
+        lifecycleScope.launch{
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                newsViewModel.getRecentNews().collect{
+                    recentNewsAdapter.submitData(it)
+                }
+            }
+        }
+
     }
 
     override fun onStart() {
@@ -174,13 +189,27 @@ class HomeFragment : Fragment() {
     private fun setUpAdapter(){
 
         //popular news
-        popularNewsAdapter = PopularNewsAdapter(PopularNewsAdapter.OnNewsItemClickListener{
+        popularNewsAdapter = PopularNewsAdapter(PopularNewsAdapter.OnNewsItemClickListener{ article->
             //do something
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(article.url))
+            startActivity(intent)
         })
 
         binding.popularNewsRcv.apply {
             adapter = popularNewsAdapter
         }
+
+        //recent news
+        recentNewsAdapter = RecentNewsAdapter(RecentNewsAdapter.OnNewsItemClickListener{ article->
+            //go to news newsDetailsFragment when recyclerview item clicked
+            val action = HomeFragmentDirections.actionHomeFragmentToNewsDetailsFragment(article)
+            findNavController().navigate(action)
+        })
+
+        binding.recentNewsRcv.apply {
+            adapter = recentNewsAdapter
+        }
+
 
 
     }
