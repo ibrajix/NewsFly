@@ -25,7 +25,7 @@
 * Navigation Component
 * Room and DataStore (Used Both)
 * Hilt
-* Pagination
+* Pagination [ Using both Pagintion Library (Home page) and Recyclerview onScroll Listener (Search Page) ]
 * Retrofit
 * Glide
 * Offline Capabilities -- Using both Remote Mediator (Pagination) and NetworkBound Resource 
