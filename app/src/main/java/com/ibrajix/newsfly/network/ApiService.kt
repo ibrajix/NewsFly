@@ -33,6 +33,7 @@ interface ApiService {
     @GET("everything")
     suspend fun searchForNews(
             @Query("q") q: String,
+            @Query("page") page: Int?,
             @Query("apiKey") apiKey: String = Urls.API_KEY
     ): Response<AllNewsResponse>
 

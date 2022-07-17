@@ -16,6 +16,6 @@ class ApiDataSource @Inject constructor(private val apiService: ApiService) {
     suspend fun getPopularNews() = apiService.getPopularNews()
 
     //search for news
-    suspend fun searchForNews(q: String) = apiService.searchForNews(q)
+    suspend fun searchForNews(q: String, page: Int?) = apiService.searchForNews(q, page)
 
 }

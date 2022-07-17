@@ -4,7 +4,9 @@
 
 package com.ibrajix.newsfly.ui.viewmodel
 
+import android.content.Context
 import android.util.Log
+import androidx.datastore.preferences.protobuf.Api
 import androidx.lifecycle.*
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
@@ -16,7 +18,9 @@ import com.ibrajix.newsfly.database.entity.RecentArticle
 import com.ibrajix.newsfly.model.responses.AllNewsResponse
 import com.ibrajix.newsfly.network.ApiService
 import com.ibrajix.newsfly.network.ApiStatus
+import com.ibrajix.newsfly.utils.Utility.isConnectedToInternet
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 import kotlinx.coroutines.async
@@ -31,7 +35,7 @@ import retrofit2.Response.error
 class AllNewsViewModel @Inject constructor(private val allNewsRepository: AllNewsRepository) : ViewModel() {
 
 
-    /**
+     /**
      * Popular and Recent ews
      */
 
@@ -86,18 +90,35 @@ class AllNewsViewModel @Inject constructor(private val allNewsRepository: AllNew
     private val _searchAllNews = MutableLiveData<ApiStatus<AllNewsResponse>>()
     val searchAllNews: LiveData<ApiStatus<AllNewsResponse>> = _searchAllNews
 
+    var searchNewsPage = 1
+    var searchNewsResponse: AllNewsResponse? = null
+    var newSearchQuery:String? = null
+    var oldSearchQuery:String? = null
+
     fun doSearchForNews(q: String) {
-
-        _searchAllNews.value = ApiStatus.Loading(data = null)
-
         viewModelScope.launch {
-            allNewsRepository.searchForNewsItem(q)
-                .catch { e ->
-                    _searchAllNews.value = ApiStatus.Error(data = null, throwable = e)
+            newSearchQuery = q
+            _searchAllNews.postValue(ApiStatus.Loading(data = null))
+            try {
+                val response = allNewsRepository.searchForNewsItem(q, searchNewsPage)
+                if (searchNewsResponse == null || newSearchQuery != oldSearchQuery){
+                    searchNewsPage = 1
+                    oldSearchQuery = newSearchQuery
+                    searchNewsResponse = response.data
+                }else{
+                    searchNewsPage++
+                    val oldArticles = searchNewsResponse?.recentArticles
+                    val newArticles = response.data?.recentArticles
+                    if (newArticles != null) {
+                        oldArticles?.addAll(newArticles)
+                    }
                 }
-                .collect {
-                    _searchAllNews.value = it
-                }
+                _searchAllNews.postValue(ApiStatus.Success(searchNewsResponse?: response.data))
+            }catch (e: Exception){
+                //log error
+                ApiStatus.Error(data = null, throwable = e)
+            }
+
         }
     }
 

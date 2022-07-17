@@ -101,11 +101,10 @@ class AllNewsRepository @Inject constructor(private val apiDataSource: ApiDataSo
      * Search for news without pagination and offline support
      */
 
-    suspend fun searchForNewsItem(q: String) : Flow<ApiStatus<AllNewsResponse>> {
-        return flow {
-            val result = safeApiCall { apiDataSource.searchForNews(q) }
-            emit(result)
-        }.flowOn(Dispatchers.IO)
+    suspend fun searchForNewsItem(q: String, page: Int?) : ApiStatus<AllNewsResponse> {
+       return safeApiCall {
+            apiDataSource.searchForNews(q, page)
+        }
     }
 
 

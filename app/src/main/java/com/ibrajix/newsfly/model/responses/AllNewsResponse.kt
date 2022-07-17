@@ -9,7 +9,7 @@ import com.ibrajix.newsfly.database.entity.RecentArticle
 
 data class AllNewsResponse(
         @SerializedName("articles")
-        val recentArticles: List<RecentArticle>,
+        val recentArticles: MutableList<RecentArticle>,
         val status: String,
         val totalResults: Int
 )
